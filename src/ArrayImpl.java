@@ -167,6 +167,17 @@ public class ArrayImpl<E extends Comparable<? super E>> implements Array<E> {
     }
   }
 
+  @Override
+  public E max() {
+    E max = data[0];
+    for (int i = 1; i < size; i++) {
+      if (data[i].compareTo(max) > 0){
+        max = data[i];
+      }
+    }
+    return max;
+  }
+
   private void checkIndex(int index) {
     if (index < 0 || index >= size) {
       throw new MyCustomArrayIndexOutOfBoundsException(index, size);
