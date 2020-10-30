@@ -17,4 +17,52 @@ public class Util {
     }
     return arrayEmpty;
   }
+
+  public static void bubbleSort(int[] array){
+    for (int i = 0; i < array.length-1; i++) {
+      for (int j = 0; j < array.length-1-i; j++) {
+        if (array[j] > array[j+1]){
+          int temp = array[j];
+          array[j] = array[j+1];
+          array[j+1] = temp;
+        }
+      }
+    }
+  }
+  public static void selectSort(int[] array){
+    for (int i = 0; i < array.length-1; i++) {
+      int temp = array[i];
+      int index = i;
+      for (int j = i+1; j < array.length; j++) {
+       if (array[j] < temp){
+         index = j;
+       }
+      }
+      if (index != i){
+        array[i] = array[index];
+        array[index] = temp;
+        i--;
+      }
+    }
+  }
+
+  public static void selectSort2(int[] array){
+    for (int i = 0; i < array.length-1; i++) {
+      int min = array[i];
+      int index = i;
+      for (int j = i+1; j < array.length; j++) {
+        if (array[j] < min){
+          min = array[j];
+          index = j;
+        }
+      }
+      if (index != i){
+        int temp = array[i];
+        array[i] = array[index];
+        array[index] = temp;
+      }
+    }
+  }
+
+
 }

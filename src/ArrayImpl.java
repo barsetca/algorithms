@@ -36,13 +36,12 @@ public class ArrayImpl<E extends Comparable<? super E>> implements Array<E> {
     checkAndGrow();
     if (index == size) {
       add(value);
-    }
-    else {
+    } else {
       checkIndex(index);
 //            for (int i = size - 1; i >= index; i--) {
 //                data[i + 1] = data[i];
 //            }
-      if (size - index >= 0)  {
+      if (size - index >= 0) {
         System.arraycopy(data, index, data, index + 1, size - index);
       }
       data[index] = value;
@@ -148,8 +147,26 @@ public class ArrayImpl<E extends Comparable<? super E>> implements Array<E> {
           minIndex = j;
         }
       }
-      swap(minIndex, i);
+     swap(minIndex, i);
     }
+  }
+
+  @Override
+  public void selectSort2() {
+    for (int i = 0; i < size - 1; i++) {
+      E min = data[i];
+      int minIndex = i;
+      for (int j = i + 1; j < size; j++) {
+        if (data[j].compareTo(min) < 0) {
+          min = data[j];
+          minIndex = j;
+        }
+      }
+        E temp = data[i];
+        data[i] = data[minIndex];
+        data[minIndex] = temp;
+//        swap(minIndex, i);
+         }
   }
 
   //O(n^2) --> O(n) - compare
@@ -169,9 +186,10 @@ public class ArrayImpl<E extends Comparable<? super E>> implements Array<E> {
 
   @Override
   public E max() {
-    E max = data[0];
+    E max = null;
     for (int i = 1; i < size; i++) {
-      if (data[i].compareTo(max) > 0){
+      max = data[0];
+      if (data[i].compareTo(max) > 0) {
         max = data[i];
       }
     }

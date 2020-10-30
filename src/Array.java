@@ -32,6 +32,8 @@ public interface Array<E> {
 
   void sortInsert();
 
+  void selectSort2();
+
   E max();
 
 }
