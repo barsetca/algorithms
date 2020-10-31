@@ -1,4 +1,6 @@
-public class SortedArrayImpl <E extends Comparable<? super E>> extends ArrayImpl<E> {
+package lesson2;
+
+public class SortedArrayImpl<E extends Comparable<? super E>> extends ArrayImpl<E> {
 
   @SuppressWarnings("unchecked")
   public SortedArrayImpl(int initialCapacity) {
@@ -15,11 +17,9 @@ public class SortedArrayImpl <E extends Comparable<? super E>> extends ArrayImpl
       int mid = (low + high) / 2;
       if (get(mid).equals(value)) {
         return mid;
-      }
-      else if (value.compareTo(get(mid)) > 0) {
+      } else if (value.compareTo(get(mid)) > 0) {
         low = mid + 1;
-      }
-      else {
+      } else {
         high = mid - 1;
       }
     }
@@ -42,8 +42,7 @@ public class SortedArrayImpl <E extends Comparable<? super E>> extends ArrayImpl
 
     if (index == size()) {
       data[size++] = value;
-    }
-    else {
+    } else {
       doInsert(value, index);
     }
   }

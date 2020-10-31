@@ -1,3 +1,5 @@
+package lesson2;
+
 import exceptions.MyCustomArrayIndexOutOfBoundsException;
 import java.util.Arrays;
 
@@ -36,13 +38,12 @@ public class ArrayImpl<E extends Comparable<? super E>> implements Array<E> {
     checkAndGrow();
     if (index == size) {
       add(value);
-    }
-    else {
+    } else {
       checkIndex(index);
 //            for (int i = size - 1; i >= index; i--) {
 //                data[i + 1] = data[i];
 //            }
-      if (size - index >= 0)  {
+      if (size - index >= 0) {
         System.arraycopy(data, index, data, index + 1, size - index);
       }
       data[index] = value;
@@ -181,6 +182,10 @@ public class ArrayImpl<E extends Comparable<? super E>> implements Array<E> {
 
   private int calculateNewLength() {
     return size > 0 ? size * 2 : 1;
+  }
+
+  public E[] toArray() {
+    return data;
   }
 }
 
