@@ -2,9 +2,9 @@ package lesson3.queue;
 
 public interface Queue<E> {
 
-  boolean insert(E value);
+  boolean insertTail(E value);
 
-  E remove();
+  E removeHead();
 
   E peekHead();
 
@@ -15,6 +15,5 @@ public interface Queue<E> {
   }
 
   boolean isFull();
-
 
 }

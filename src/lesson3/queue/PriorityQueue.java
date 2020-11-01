@@ -7,7 +7,7 @@ public class PriorityQueue<E extends Object & Comparable<? super E>> extends Que
   }
 
   @Override
-  public boolean insert(E value) {
+  public boolean insertTail(E value) {
     if (isFull()) {
       return false;
     }
@@ -25,13 +25,13 @@ public class PriorityQueue<E extends Object & Comparable<? super E>> extends Que
   }
 
   @Override
-  public E remove() {
+  public E removeHead() {
     return isEmpty() ? null : data[--size];
   }
 
   @Override
   public E peekHead() {
-    return data[size - 1];
+    return isEmpty() ? null : data[size - 1];
 
   }
 }
