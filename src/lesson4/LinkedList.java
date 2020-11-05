@@ -1,6 +1,8 @@
 package lesson4;
 
-public interface LinkedList<E> {
+import java.util.Iterator;
+
+public interface LinkedList<E> extends Iterable<E> {
 
   /**
    * O(1) add element to the beginning of list
@@ -39,6 +41,8 @@ public interface LinkedList<E> {
   void display();
 
   E getFirst();
+
+  Iterator<E> iterator();
 
   class Node<E> {
 

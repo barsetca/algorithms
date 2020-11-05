@@ -1,8 +1,6 @@
 package lesson4;
 
 
-import java.util.ArrayList;
-import java.util.List;
 import lesson3.queue.Queue;
 import lesson3.stack.Stack;
 
@@ -11,20 +9,22 @@ public class TestMain4 {
   public static void main(String[] args) {
 //        testLinkedList();
 //        testStack();
-    testQueue();
-//        testForEach();
+//    testQueue();
+    testForEach();
   }
 
   private static void testForEach() {
-    List<Integer> arrayList = new ArrayList<>();
-    arrayList.add(1);
-    arrayList.add(2);
-    arrayList.add(3);
-    arrayList.add(4);
-
-    for (Integer integer : arrayList) {
-      System.out.println(integer);
-    }
+//    List<Integer> arrayList = new ArrayList<>();
+//    arrayList.add(1);
+//    arrayList.add(2);
+//    arrayList.add(3);
+//    arrayList.add(4);
+//
+//    List<Integer> list = new java.util.LinkedList<>();
+//
+//    for (Integer integer : arrayList) {
+//      System.out.println(integer);
+//    }
 
     LinkedList<Integer> linkedList = new SimpleLinkedListImpl<>();
     linkedList.insertFirst(1);
@@ -34,9 +34,9 @@ public class TestMain4 {
 
     linkedList.display();
 
-//        for(Integer value: linkedList) {
-//            System.out.println(value);
-//        }
+    for (Integer value : linkedList) {
+      System.out.println(value);
+    }
   }
 
   private static void testLinkedList() {
