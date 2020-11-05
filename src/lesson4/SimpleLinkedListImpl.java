@@ -3,15 +3,12 @@ package lesson4;
 
 import java.util.Iterator;
 
-public class SimpleLinkedListImpl<E> implements LinkedList<E>, Iterator<E> {
+public class SimpleLinkedListImpl<E> implements LinkedList<E> {
 
   protected int size;
   protected Node<E> firstElement;
 
-  private int cursor;       // index of next element to return
-  private Node<E> current;
-  //int lastRet = -1; // index of last element returned; -1 if no such
-  //int expectedModCount = modCount;
+
 
   @Override
   public void insertFirst(E value) {
@@ -95,7 +92,6 @@ public class SimpleLinkedListImpl<E> implements LinkedList<E>, Iterator<E> {
       current = current.next;
     }
     System.out.println("------------------------");
-
   }
 
   @Override
@@ -109,6 +105,10 @@ public class SimpleLinkedListImpl<E> implements LinkedList<E>, Iterator<E> {
 
   private class MyIterator implements Iterator<E> {
 
+    private int cursor;       // index of next element to return
+    private Node<E> current;
+    //int lastRet = -1; // index of last element returned; -1 if no such
+    //int expectedModCount = modCount;
     public MyIterator() {
     }
 
@@ -136,26 +136,26 @@ public class SimpleLinkedListImpl<E> implements LinkedList<E>, Iterator<E> {
     }
   }
 
-  @Override
-  public boolean hasNext() {
-    return cursor != size;
-  }
-
-  @Override
-  public E next() {
-    if (cursor == 0) {
-      current = firstElement;
-      //next = firstElement.next;
-    } else {
-      current = current.next;
-    }
+//  @Override
+//  public boolean hasNext() {
+//    return cursor != size;
+//  }
+//
+//  @Override
+//  public E next() {
+//    if (cursor == 0) {
+//      current = firstElement;
+//      //next = firstElement.next;
+//    } else {
+//      current = current.next;
+//    }
 //    int i = cursor;
 ////    if (i >= size) {
 ////      throw new NoSuchElementException();}
 //    Object[] elementData = this.;
 //    if (i >= elementData.length)
 //      throw new ConcurrentModificationException();
-    cursor++;
-    return current.item;
-  }
+//    cursor++;
+//    return current.item;
+//  }
 }

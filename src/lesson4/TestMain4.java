@@ -26,17 +26,19 @@ public class TestMain4 {
 //      System.out.println(integer);
 //    }
 
-    LinkedList<Integer> linkedList = new SimpleLinkedListImpl<>();
+    SimpleLinkedListImpl<Integer> linkedList = new SimpleLinkedListImpl<>();
     linkedList.insertFirst(1);
     linkedList.insertFirst(2);
     linkedList.insertFirst(3);
     linkedList.insertFirst(4);
+    linkedList.insertFirst(5);
 
     linkedList.display();
 
     for (Integer value : linkedList) {
       System.out.println(value);
     }
+
   }
 
   private static void testLinkedList() {
