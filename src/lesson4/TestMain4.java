@@ -20,7 +20,6 @@ public class TestMain4 {
 //    arrayList.add(3);
 //    arrayList.add(4);
 //
-//    List<Integer> list = new java.util.LinkedList<>();
 //
 //    for (Integer integer : arrayList) {
 //      System.out.println(integer);
