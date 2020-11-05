@@ -1,36 +1,37 @@
 package lesson4.iterator;
 
 public class LinkIterator {
+
   private Link current;
   private Link previous;
   private LinkedListLearn list;
 
-  public LinkIterator(LinkedListLearn list){
+  public LinkIterator(LinkedListLearn list) {
     this.list = list;
     this.reset();
   }
 
-  public void reset(){
+  public void reset() {
     current = list.getFirst();
     previous = null;
   }
 
-  public boolean atEnd(){
+  public boolean atEnd() {
     return (current.next == null);
   }
 
-  public void nextLink(){
+  public void nextLink() {
     previous = current;
     current = current.next;
   }
 
-  public Link getCurrent(){
+  public Link getCurrent() {
     return current;
   }
 
-  public void insertAfter(String name, int age){
+  public void insertAfter(String name, int age) {
     Link newLink = new Link(name, age);
-    if (list.isEmpty()){
+    if (list.isEmpty()) {
       list.setFirst(newLink);
       current = newLink;
     } else {
@@ -40,28 +41,27 @@ public class LinkIterator {
     }
   }
 
-  public void insertBefore(String name, int age){
+  public void insertBefore(String name, int age) {
     Link newLink = new Link(name, age);
-    if(previous == null){
+    if (previous == null) {
       newLink.next = list.getFirst();
       list.setFirst(newLink);
       reset();
-    }
-    else{
+    } else {
       newLink.next = previous.next;
       previous.next = newLink;
       current = newLink;
     }
   }
 
-  public String deleteCurrent(){
+  public String deleteCurrent() {
     String name = current.name;
-    if (previous == null){
+    if (previous == null) {
       list.setFirst(current.next);
       reset();
     } else {
       previous.next = current.next;
-      if (atEnd()){
+      if (atEnd()) {
         reset();
       } else {
         current = current.next;

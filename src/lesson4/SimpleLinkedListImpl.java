@@ -1,14 +1,11 @@
 package lesson4;
 
-
 import java.util.Iterator;
 
 public class SimpleLinkedListImpl<E> implements LinkedList<E> {
 
   protected int size;
   protected Node<E> firstElement;
-
-
 
   @Override
   public void insertFirst(E value) {
@@ -106,9 +103,8 @@ public class SimpleLinkedListImpl<E> implements LinkedList<E> {
   private class MyIterator implements Iterator<E> {
 
     private int cursor;       // index of next element to return
-    private Node<E> current;
-    //int lastRet = -1; // index of last element returned; -1 if no such
-    //int expectedModCount = modCount;
+    private Node<E> current; // current Object from according to cursor
+
     public MyIterator() {
     }
 
@@ -121,41 +117,11 @@ public class SimpleLinkedListImpl<E> implements LinkedList<E> {
     public E next() {
       if (cursor == 0) {
         current = firstElement;
-        //next = firstElement.next;
       } else {
         current = current.next;
       }
-//    int i = cursor;
-////    if (i >= size) {
-////      throw new NoSuchElementException();}
-//    Object[] elementData = this.;
-//    if (i >= elementData.length)
-//      throw new ConcurrentModificationException();
       cursor++;
       return current.item;
     }
   }
-
-//  @Override
-//  public boolean hasNext() {
-//    return cursor != size;
-//  }
-//
-//  @Override
-//  public E next() {
-//    if (cursor == 0) {
-//      current = firstElement;
-//      //next = firstElement.next;
-//    } else {
-//      current = current.next;
-//    }
-//    int i = cursor;
-////    if (i >= size) {
-////      throw new NoSuchElementException();}
-//    Object[] elementData = this.;
-//    if (i >= elementData.length)
-//      throw new ConcurrentModificationException();
-//    cursor++;
-//    return current.item;
-//  }
 }

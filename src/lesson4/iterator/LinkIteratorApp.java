@@ -1,6 +1,7 @@
 package lesson4.iterator;
 
 public class LinkIteratorApp {
+
   public static void main(String[] args) {
     LinkedListLearn list = new LinkedListLearn();
 
@@ -20,7 +21,7 @@ public class LinkIteratorApp {
 
     System.out.println(itr.atEnd()); //false
 
-    while (!itr.atEnd()){
+    while (!itr.atEnd()) {
       itr.nextLink();
     }
 

@@ -4,7 +4,7 @@ public class LinkedListLearn {
 
   private Link first;
 
-  public LinkedListLearn(){
+  public LinkedListLearn() {
     first = null;
 
   }
@@ -17,18 +17,18 @@ public class LinkedListLearn {
     this.first = first;
   }
 
-  public LinkIterator getIterator(){
+  public LinkIterator getIterator() {
     return new LinkIterator(this);
   }
 
-  public boolean isEmpty(){
+  public boolean isEmpty() {
     return (first == null);
   }
 
-  public void display(){
+  public void display() {
     System.out.println("--------------------------");
     Link current = first;
-    while(current != null){
+    while (current != null) {
       current.display();
       current = current.next;
     }
