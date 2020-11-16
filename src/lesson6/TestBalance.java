@@ -17,15 +17,14 @@ public class TestBalance {
   public static void main(String[] args) {
     fillTreeList();
     printBalancePercent();
-    MyTreeImpl<Integer> myTree = fillTree(new MyTreeImpl<>(MAX_HEIGHT));
-    myTree.display();
-  }
+     }
 
   private static void printBalancePercent() {
     int countBalance = 0;
     for (MyTree<Integer> tree : trees) {
       if (tree.isBalanced()) {
         countBalance++;
+        tree.display();
       }
     }
     System.out.printf(
