@@ -8,7 +8,7 @@ public class Test {
   }
 
   private static void testRemoveElement() {
-    MyTree<Integer> tree = new MyTreeImpl<>(10);
+    MyTree<Integer> tree = new MyTreeImpl<>();
     tree.add(60);
     tree.add(25);
     tree.add(66);
@@ -19,12 +19,12 @@ public class Test {
     tree.add(30);
     tree.add(55);
     tree.add(32);
-//    tree.add(63);
-//    tree.add(69);
+    tree.add(63);
+    tree.add(69);
 //    tree.add(62);
-    tree.add(65);
-    tree.add(67);
-    //tree.add(71);
+//    tree.add(65);
+//    tree.add(67);
+//    tree.add(71);
     tree.display();
     System.out.println("Сбалансировано? - " + tree.isBalanced());
     // tree.remove(25);
@@ -32,7 +32,7 @@ public class Test {
   }
 
   private static void testTree() {
-    MyTree<Integer> tree = new MyTreeImpl<>(10);
+    MyTree<Integer> tree = new MyTreeImpl<>();
     tree.add(60);
     tree.add(50);
     tree.add(66);
