@@ -6,8 +6,13 @@ import java.util.function.Consumer;
 public class MyTreeImpl<E extends Comparable<? super E>> implements MyTree<E> {
 
   private int size;
+  private int maxHeight;
 
   private MyNode<E> root;
+
+  public MyTreeImpl(int maxHeight) {
+    this.maxHeight = maxHeight;
+  }
 
   @Override
   public boolean add(E value) {
@@ -20,6 +25,9 @@ public class MyTreeImpl<E extends Comparable<? super E>> implements MyTree<E> {
     }
 
     NodeAndParent nodeAndParent = doFind(value);
+    if (nodeAndParent.height > maxHeight) {
+      return false;
+    }
     MyNode<E> parent = nodeAndParent.parent;
     if (parent == null || nodeAndParent.current != null) {
       return false;
@@ -208,18 +216,17 @@ public class MyTreeImpl<E extends Comparable<? super E>> implements MyTree<E> {
       nBlanks /= 2;
     }
     System.out.println("................................................................");
-
-
   }
-
 
   private NodeAndParent doFind(E value) {
     MyNode<E> previous = null;
     MyNode<E> current = root;
+    int height = 1;
 
     while (current != null) {
+      height++;
       if (current.getValue().equals(value)) {
-        return new NodeAndParent(current, previous);
+        return new NodeAndParent(current, previous, height);
       }
       previous = current;
       if (current.isRightChild(value)) {
@@ -228,17 +235,37 @@ public class MyTreeImpl<E extends Comparable<? super E>> implements MyTree<E> {
         current = current.getLeftChild();
       }
     }
-    return new NodeAndParent(null, previous);
+
+    return new NodeAndParent(null, previous, height);
+  }
+
+  public boolean isBalanced() {
+    return isBalanced(root);
+  }
+
+
+  private boolean isBalanced(MyNode node) {
+    return (node == null) ||
+        isBalanced(node.getLeftChild()) &&
+            isBalanced(node.getRightChild()) &&
+            Math.abs(height(node.getLeftChild()) - height(node.getRightChild())) <= 1;
+  }
+
+  private static int height(MyNode node) {
+    return node == null ? 0
+        : 1 + Math.max(height(node.getLeftChild()), height(node.getRightChild()));
   }
 
   private class NodeAndParent {
 
     private MyNode<E> current;
     private MyNode<E> parent;
+    private int height;
 
-    public NodeAndParent(MyNode<E> current, MyNode<E> parent) {
+    public NodeAndParent(MyNode<E> current, MyNode<E> parent, int height) {
       this.current = current;
       this.parent = parent;
+      this.height = height;
     }
   }
 }
