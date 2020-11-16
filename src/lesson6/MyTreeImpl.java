@@ -10,6 +10,10 @@ public class MyTreeImpl<E extends Comparable<? super E>> implements MyTree<E> {
 
   private MyNode<E> root;
 
+  public MyTreeImpl() {
+    this(0);
+  }
+
   public MyTreeImpl(int maxHeight) {
     this.maxHeight = maxHeight;
   }
@@ -25,7 +29,7 @@ public class MyTreeImpl<E extends Comparable<? super E>> implements MyTree<E> {
     }
 
     NodeAndParent nodeAndParent = doFind(value);
-    if (nodeAndParent.height > maxHeight) {
+    if (maxHeight != 0 && nodeAndParent.height > maxHeight) {
       return false;
     }
     MyNode<E> parent = nodeAndParent.parent;
