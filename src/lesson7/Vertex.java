@@ -6,6 +6,7 @@ public class Vertex {
 
   private final String label;
   private boolean visited;
+  private Vertex previous;
 
   public Vertex(String label) {
     this.label = label;
@@ -45,5 +46,13 @@ public class Vertex {
 
   public boolean getVisited() {
     return visited;
+  }
+
+  public void setPrevious(Vertex previous) {
+    this.previous = previous;
+  }
+
+  public Vertex getPrevious() {
+    return previous;
   }
 }
