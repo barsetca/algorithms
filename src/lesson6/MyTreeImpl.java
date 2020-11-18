@@ -5,25 +5,45 @@ import java.util.function.Consumer;
 
 public class MyTreeImpl<E extends Comparable<? super E>> implements MyTree<E> {
 
+
+  private final int maxLevel;
+  private MyNode<E> root;
   private int size;
 
-  private MyNode<E> root;
+  public MyTreeImpl() {
+    this(0);
+  }
+
+  public MyTreeImpl(int maxLevel) {
+    this.maxLevel = maxLevel;
+  }
 
   @Override
   public boolean add(E value) {
     MyNode<E> newNode = new MyNode<>(value);
 
     if (isEmpty()) {
-      root = newNode;
+      this.root = newNode;
       size++;
       return true;
     }
 
     NodeAndParent nodeAndParent = doFind(value);
-    MyNode<E> parent = nodeAndParent.parent;
-    if (parent == null || nodeAndParent.current != null) {
+    MyNode<E> current = nodeAndParent.current;
+    if (current != null) {
       return false;
     }
+
+    MyNode<E> parent = nodeAndParent.parent;
+    if (parent == null) {
+      return false;
+    }
+
+    int level = parent.getLevel() + 1;
+    if (level > maxLevel && maxLevel > 0) {
+      return false;
+    }
+
     parent.addChild(newNode);
     size++;
     return true;
@@ -31,49 +51,80 @@ public class MyTreeImpl<E extends Comparable<? super E>> implements MyTree<E> {
 
   @Override
   public boolean contains(E value) {
-    NodeAndParent nodeAndParent = doFind(value);
-    return nodeAndParent.current != null;
+    return doFind(value).current != null;
+  }
+
+  private NodeAndParent doFind(E value) {
+    MyNode<E> previous = null;
+    MyNode<E> current = root;
+
+    current.setLevel(1);
+
+    while (current != null) {
+      if (previous != null) {
+        current.setLevel(previous.getLevel() + 1);
+      }
+      if (current.getValue().equals(value)) {
+        return new NodeAndParent(current, previous);
+      }
+
+      previous = current;
+      if (current.isRightChild(value)) {
+        current = current.getRightChild();
+      } else {
+        current = current.getLeftChild();
+      }
+    }
+
+    return new NodeAndParent(null, previous);
   }
 
   @Override
   public boolean remove(E value) {
     NodeAndParent nodeAndParent = doFind(value);
     MyNode<E> removedNode = nodeAndParent.current;
-    MyNode<E> parent = nodeAndParent.parent;
+    MyNode<E> parentNode = nodeAndParent.parent;
 
     if (removedNode == null) {
       return false;
     }
+
     if (removedNode.isLeaf()) {
       if (removedNode == root) {
         root = null;
-      } else if (parent.isRightChild(value)) {
-        parent.setRightChild(null);
+      } else if (parentNode.isRightChild(value)) {
+        parentNode.setRightChild(null);
       } else {
-        parent.setLeftChild(null);
+        parentNode.setLeftChild(null);
       }
-    } else if (removedNode.hasOnlyOneChild()) {
-      MyNode<E> child = removedNode.getLeftChild() != null ?
-          removedNode.getLeftChild() : removedNode.getRightChild();
+    }
+    else if (removedNode.hasOnlyOneChild()) {
+      MyNode<E> child = removedNode.getLeftChild() != null
+          ? removedNode.getLeftChild()
+          : removedNode.getRightChild();
 
       if (removedNode == root) {
         root = child;
-      } else if (parent.isRightChild(value)) {
-        parent.setRightChild(child);
+      } else if (parentNode.isRightChild(value)) {
+        parentNode.setRightChild(child);
       } else {
-        parent.setLeftChild(child);
+        parentNode.setLeftChild(child);
       }
-    } else {
+    }
+    else {
       MyNode<E> successor = getSuccessor(removedNode);
       if (removedNode == root) {
         root = successor;
-      } else if (parent.isRightChild(value)) {
-        parent.setRightChild(successor);
-      } else {
-        parent.setLeftChild(successor);
       }
+      else if (parentNode.isRightChild(value)) {
+        parentNode.setRightChild(successor);
+      } else {
+        parentNode.setLeftChild(successor);
+      }
+
       successor.setLeftChild(removedNode.getLeftChild());
     }
+
     size--;
     return true;
   }
@@ -82,17 +133,19 @@ public class MyTreeImpl<E extends Comparable<? super E>> implements MyTree<E> {
     MyNode<E> successor = removedNode;
     MyNode<E> successorParent = null;
     MyNode<E> current = removedNode.getRightChild();
+
     while (current != null) {
       successorParent = successor;
       successor = current;
       current = current.getLeftChild();
     }
+
     if (successor != removedNode.getRightChild() && successorParent != null) {
       successorParent.setLeftChild(successor.getRightChild());
       successor.setRightChild(removedNode.getRightChild());
     }
-    return successor;
 
+    return successor;
   }
 
   @Override
@@ -135,13 +188,13 @@ public class MyTreeImpl<E extends Comparable<? super E>> implements MyTree<E> {
     reverseOrder(current.getLeftChild(), action);
   }
 
-  private void postOrder(MyNode<E> current, Consumer<E> action) {
+  private void inOrder(MyNode<E> current, Consumer<E> action) {
     if (current == null) {
       return;
     }
-    postOrder(current.getLeftChild(), action);
-    postOrder(current.getRightChild(), action);
+    inOrder(current.getLeftChild(), action);
     action.accept(current.getValue());
+    inOrder(current.getRightChild(), action);
   }
 
   private void preOrder(MyNode<E> current, Consumer<E> action) {
@@ -151,16 +204,25 @@ public class MyTreeImpl<E extends Comparable<? super E>> implements MyTree<E> {
     action.accept(current.getValue());
     preOrder(current.getLeftChild(), action);
     preOrder(current.getRightChild(), action);
-
   }
 
-  private void inOrder(MyNode<E> current, Consumer<E> action) {
+  private void postOrder(MyNode<E> current, Consumer<E> action) {
     if (current == null) {
       return;
     }
-    inOrder(current.getLeftChild(), action);
+    postOrder(current.getLeftChild(), action);
+    postOrder(current.getRightChild(), action);
     action.accept(current.getValue());
-    inOrder(current.getRightChild(), action);
+  }
+
+  private class NodeAndParent {
+    MyNode<E> current;
+    MyNode<E> parent;
+
+    public NodeAndParent(MyNode<E> current, MyNode<E> parent) {
+      this.current = current;
+      this.parent = parent;
+    }
   }
 
   @Override
@@ -208,37 +270,21 @@ public class MyTreeImpl<E extends Comparable<? super E>> implements MyTree<E> {
       nBlanks /= 2;
     }
     System.out.println("................................................................");
-
-
   }
 
-
-  private NodeAndParent doFind(E value) {
-    MyNode<E> previous = null;
-    MyNode<E> current = root;
-
-    while (current != null) {
-      if (current.getValue().equals(value)) {
-        return new NodeAndParent(current, previous);
-      }
-      previous = current;
-      if (current.isRightChild(value)) {
-        current = current.getRightChild();
-      } else {
-        current = current.getLeftChild();
-      }
-    }
-    return new NodeAndParent(null, previous);
+  @Override
+  public boolean isBalanced() {
+    return isBalanced(root);
   }
 
-  private class NodeAndParent {
+  private boolean isBalanced(MyNode<E> node) {
+    return (node == null) ||
+        isBalanced(node.getLeftChild()) &&
+            isBalanced(node.getRightChild()) &&
+            Math.abs(height(node.getLeftChild()) - height(node.getRightChild())) <= 1;
+  }
 
-    private MyNode<E> current;
-    private MyNode<E> parent;
-
-    public NodeAndParent(MyNode<E> current, MyNode<E> parent) {
-      this.current = current;
-      this.parent = parent;
-    }
+  private int height(MyNode<E> node) {
+    return node == null ? 0 : 1 + Math.max(height(node.getLeftChild()), height(node.getRightChild()));
   }
 }
