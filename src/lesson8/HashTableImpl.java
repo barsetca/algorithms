@@ -2,7 +2,7 @@ package lesson8;
 
 public class HashTableImpl<K, V> implements HashTable<K, V> {
 
-    private final int maxSize;
+
 
     static class Node<K, V> implements Entry<K, V> {
 
@@ -37,10 +37,9 @@ public class HashTableImpl<K, V> implements HashTable<K, V> {
                     '}';
         }
     }
-
-
     private final Node<K, V>[] data;
     private int size;
+    private final int maxSize;
 
     @SuppressWarnings("unchecked")
     public HashTableImpl(int maxSize) {
@@ -50,11 +49,12 @@ public class HashTableImpl<K, V> implements HashTable<K, V> {
 
     @Override
     public boolean put(K key, V value) {
-        int index = hash(key);
 
         if (size == maxSize) {
             return false;
         }
+
+        int index = hash(key);
 
         while(data[index] != null) {
             if (data[index].key.equals(key)) {
@@ -68,7 +68,7 @@ public class HashTableImpl<K, V> implements HashTable<K, V> {
 
         data[index] = new Node<>(key, value);
         size++;
-        return false;
+        return true;
     }
 
     protected int getStep(K key) {
