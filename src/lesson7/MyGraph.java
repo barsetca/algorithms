@@ -11,6 +11,8 @@ public class MyGraph {
   private final List<Vertex> vertexList;
   private final boolean[][] adjMat;
 
+  private int countSteps;
+
   public MyGraph(int maxVertexCount) {
     this.vertexList = new ArrayList<>(maxVertexCount);
     this.adjMat = new boolean[maxVertexCount][maxVertexCount];
@@ -74,11 +76,13 @@ public class MyGraph {
 
     Vertex startVertex = vertexList.get(startIndex);
     Stack<Vertex> stack = new Stack<>();
+    System.out.println(startVertex);
     visitVertex(startVertex, stack);
 
     while (!stack.isEmpty()) {
       Vertex nearVertex = findNearUnvisitedVertex(stack.peek());
       if (nearVertex != null) {
+        System.out.println(nearVertex);
         visitVertex(nearVertex, stack);
       } else {
         stack.pop();
@@ -97,14 +101,16 @@ public class MyGraph {
     int startIndex = getStartIndex(startLabel);
 
     Vertex startVertex = vertexList.get(startIndex);
-    Queue<Vertex> stack = new LinkedList<>();
-    visitVertex(startVertex, stack);
-    while (!stack.isEmpty()) {
-      Vertex nearVertex = findNearUnvisitedVertex(stack.peek());
+    Queue<Vertex> queue = new LinkedList<>();
+    System.out.println(startVertex);
+    visitVertex(startVertex, queue);
+    while (!queue.isEmpty()) {
+      Vertex nearVertex = findNearUnvisitedVertex(queue.peek());
       if (nearVertex != null) {
-        visitVertex(nearVertex, stack);
+        System.out.println(nearVertex);
+        visitVertex(nearVertex, queue);
       } else {
-        stack.remove();
+        queue.remove();
       }
     }
     resetVertexState();
@@ -121,7 +127,9 @@ public class MyGraph {
   private void resetVertexState() {
     for (Vertex vertex : vertexList) {
       vertex.setVisited(false);
+      vertex.setPrevious(null);
     }
+    countSteps = 0;
   }
 
   private Vertex findNearUnvisitedVertex(Vertex peek) {
@@ -142,9 +150,59 @@ public class MyGraph {
   }
 
   private void visitVertex(Vertex vertex, Queue<Vertex> queue) {
-    System.out.println(vertex);
     queue.add(vertex);
     vertex.setVisited(true);
   }
 
+  public void printShortestPath(String startLabel, String endLabel) {
+
+    if (startLabel.equals(endLabel)) {
+      System.out
+          .println("Мы находимся в конечной точке. Количество необходимых шагов = " + countSteps);
+      return;
+    }
+
+    int startIndex = indexOf(startLabel);
+    int endIndex = indexOf(endLabel);
+
+    if (startIndex == -1 || endIndex == -1) {
+      throw new IllegalArgumentException("One of the label not exists in vertexList");
+    }
+    Vertex startVertex = vertexList.get(startIndex);
+    Queue<Vertex> queue = new LinkedList<>();
+    visitVertex(startVertex, queue);
+    while (!queue.isEmpty()) {
+      Vertex peek = queue.peek();
+      Vertex nearVertex = findNearUnvisitedVertex(peek);
+      if (nearVertex != null) {
+        nearVertex.setPrevious(peek);
+        if (endLabel.equals(nearVertex.getLabel())) {
+          System.out.println("\n---------------------------------------------------------------");
+          printPath(nearVertex);
+          System.out.println("\n---------------------------------------------------------------\n");
+          break;
+        }
+        visitVertex(nearVertex, queue);
+      } else {
+        queue.remove();
+      }
+    }
+    resetVertexState();
+
+  }
+
+  private void printPath(Vertex vertex) {
+
+    if (vertex.getPrevious() == null) {
+
+      System.out.printf("Крачайший путь (%d шага(ов)) : %n", countSteps);
+      System.out.print(vertex.getLabel());
+
+      return;
+    }
+    countSteps++;
+    printPath(vertex.getPrevious());
+    System.out.print(" -> ");
+    System.out.print(vertex.getLabel());
+  }
 }
